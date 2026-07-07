@@ -1,0 +1,45 @@
+dataset_name: ecommerce_orders
+
+expected_columns:
+
+  - Order_ID
+  - Customer_ID
+  - Order_Date
+  - Year
+  - Month
+  - Day
+  - Day_Of_Week
+  - Quarter
+  - Customer_Age
+  - Customer_Gender
+  - Country
+  - City
+  - Customer_Segment
+  - Product_ID
+  - Product_Category
+  - Product_Subcategory
+  - Brand
+  - Unit_Price
+  - Quantity
+  - Discount_Percent
+  - Discount_Amount
+  - Coupon_Used
+  - Shipping_Cost
+  - Tax_Amount
+  - Order_Amount
+  - Payment_Method
+  - Device_Type
+  - Traffic_Source
+  - Membership_Status
+  - Shipping_Method
+  - Warehouse_Region
+  - Delivery_Days
+  - Order_Status
+  - Returned
+  - Review_Rating
+  - Customer_Lifetime_Value
+  - Profit_Margin_Percent
+  - Profit_Amount
+  - Season
+  - Holiday_Season
+  - High_Value_Order

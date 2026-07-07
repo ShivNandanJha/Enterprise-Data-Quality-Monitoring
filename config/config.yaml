@@ -1,0 +1,19 @@
+quality_score:
+
+  excellent: 98
+
+  good: 95
+
+  acceptable: 90
+
+  poor: 80
+
+alerts:
+
+  email_threshold: 90
+
+  critical_rule_failure: true
+
+logging:
+
+  level: INFO
