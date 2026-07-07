@@ -3,26 +3,45 @@ import pandas as pd
 
 class DataProfiler:
 
-    def __init__(self, df):
+    def __init__(self, dataframe):
+        self.df = dataframe
 
-        self.df = df
+    def generate_profile(self):
 
-    def basic_info(self):
+        profiles = []
 
-        print("\n========== DATA PROFILE ==========\n")
+        for column in self.df.columns:
 
-        print(f"Rows : {self.df.shape[0]}")
+            profile = {
+                "column_name": column,
+                "data_type": str(self.df[column].dtype),
+                "total_rows": int(len(self.df)),
+                "null_count": int(self.df[column].isnull().sum()),
+                "null_percentage":float(round(
+                    self.df[column].isnull().mean() * 100,
+                    2
+                )),
+                "unique_values": int(
+                    self.df[column].nunique()
+                )
+            }
 
-        print(f"Columns : {self.df.shape[1]}")
+            # Numeric columns
+            if pd.api.types.is_numeric_dtype(self.df[column]):
 
-        print("\nColumn Types\n")
+                profile["min"] =float(self.df[column].min())
+                profile["max"] = float(self.df[column].max())
+                profile["mean"] = float(round(
+                    self.df[column].mean(),
+                    2
+                ))
 
-        print(self.df.dtypes)
+            else:
 
-        print("\nMissing Values\n")
+                profile["min"] = None
+                profile["max"] = None
+                profile["mean"] = None
 
-        print(self.df.isnull().sum())
+            profiles.append(profile)
 
-        print("\nDuplicate Rows")
-
-        print(self.df.duplicated().sum())
+        return profiles

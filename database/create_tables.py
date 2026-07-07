@@ -12,14 +12,17 @@ db.connect()
 
 cursor = db.connection.cursor()
 
-schema = Path(__file__).resolve().parent / "schema.sql"
-schema = schema.read_text(encoding="utf-8")
+database_dir = Path(__file__).resolve().parent
 
-for statement in schema.split(";"):
-    statement = statement.strip()
+for sql_file in ("schema.sql", "audit_schema.sql", 
+    "profile_schema.sql"):
+    schema = (database_dir / sql_file).read_text(encoding="utf-8")
 
-    if statement:
-        cursor.execute(statement)
+    for statement in schema.split(";"):
+        statement = statement.strip()
+
+        if statement:
+            cursor.execute(statement)
 
 db.connection.commit()
 

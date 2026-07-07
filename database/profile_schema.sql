@@ -1,32 +1,27 @@
-CREATE TABLE IF NOT EXISTS profile_runs (
+USE enterprise_quality;
 
-    profile_id INT AUTO_INCREMENT PRIMARY KEY,
-
-    profile_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    total_rows INT,
-
-    total_columns INT,
-
-    duplicate_rows INT,
-
-    missing_cells INT
-
-);
-
-
-CREATE TABLE IF NOT EXISTS profile_column_summary (
+CREATE TABLE IF NOT EXISTS data_profile (
 
     id INT AUTO_INCREMENT PRIMARY KEY,
 
-    profile_id INT,
+    profile_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     column_name VARCHAR(100),
 
     data_type VARCHAR(50),
 
-    missing_values INT,
+    total_rows INT,
 
-    unique_values INT
+    null_count INT,
+
+    null_percentage DECIMAL(8,2),
+
+    unique_values INT,
+
+    minimum_value VARCHAR(255),
+
+    maximum_value VARCHAR(255),
+
+    average_value DOUBLE
 
 );
