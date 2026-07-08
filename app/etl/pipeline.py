@@ -10,6 +10,11 @@ from app.validation.schema_validator import SchemaValidator
 from app.validation.validator import Validator
 from app.profiling.profiler import DataProfiler
 from app.profiling.profile_service import ProfileService
+from app.alerts.decision_engine import AlertDecisionEngine
+from app.alerts.email_template import EmailTemplate
+from app.alerts.email_service import EmailService
+from app.etl.incremental_loader import IncrementalLoader
+
 
 class Pipeline:
 
@@ -27,10 +32,10 @@ class Pipeline:
         
         ProfileService.save(profiles)
 
-        print("\n========== DATA PROFILE ==========\n")
+        # print("\n========== DATA PROFILE ==========\n")
 
-        for profile in profiles:
-            print(profile)
+        # for profile in profiles:
+        #     print(profile)
         
         report = SchemaValidator(df).validate()
 
@@ -54,6 +59,24 @@ class Pipeline:
         
         validation_results = Validator(df).run()
         score = QualityService.calculate(validation_results)
+        
+        should_send = AlertDecisionEngine.should_send_alert(
+        schema_status=report["status"],
+        validation_results=validation_results,
+        quality_score=score
+)
+
+        if should_send:
+
+            html = EmailTemplate.build(
+            score,
+            validation_results
+        )
+
+            EmailService.send(
+            subject="🚨 Enterprise Data Quality Alert",
+            html=html
+        )
 
         
         passed = sum(r.passed for r in validation_results)
@@ -66,7 +89,14 @@ class Pipeline:
         print(f"Rules Passed     : {passed}")
         print(f"Rules Failed     : {failed}")
         print(f"Quality Score    : {score}%")
+        
+        
         df = Transform().run(df)
+        print(df["Order_ID"].dtype)
+        
+        incremental_loader = IncrementalLoader(db)
+        df = incremental_loader.filter_new_records(df)
+        print(f"New Records : {len(df)}")
 
         Load(db).run(df)
         duration = logger.stop()
