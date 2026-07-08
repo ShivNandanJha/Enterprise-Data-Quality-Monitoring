@@ -1,5 +1,7 @@
 # Enterprise Data Quality Monitoring Platform
 
+![Framework](data/images/framework.png)
+
 ## Overview
 
 The Enterprise Data Quality Monitoring Platform is a Python-based ETL and Data Quality Framework designed to simulate how enterprise organizations monitor, validate, and ingest data before it is consumed by downstream analytics systems.
@@ -53,6 +55,8 @@ Automatically calculates an overall quality score based on validation results.
 * Gmail SMTP Integration
 * Critical rule detection
 * Quality score threshold alerts
+
+![Email](data/images/email.png)
 
 ### Incremental Loading
 
